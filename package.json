@@ -1,0 +1,29 @@
+{
+	"name": "obsidian-toc-reader",
+	"version": "0.1.0",
+	"description": "Typora-style [TOC] rendering for Obsidian, with clickable jump-to-heading in reading view and Live Preview.",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+	},
+	"keywords": [
+		"obsidian",
+		"obsidian-plugin",
+		"toc",
+		"table-of-contents",
+		"typora"
+	],
+	"author": "muzi-xiaoren",
+	"license": "Apache-2.0",
+	"devDependencies": {
+		"@codemirror/state": "6.5.0",
+		"@codemirror/view": "6.38.6",
+		"@types/node": "^16.11.6",
+		"builtin-modules": "3.3.0",
+		"esbuild": "0.20.2",
+		"obsidian": "^1.5.7",
+		"tslib": "2.6.2",
+		"typescript": "5.4.5"
+	}
+}
