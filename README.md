@@ -13,6 +13,14 @@ Typora-style `[TOC]` for Obsidian. Drop a `[TOC]` line anywhere in a note and it
 
 ## Installation
 
+### From Community Plugins
+
+*Pending review.* Once accepted, search for **TOC Reader** in *Settings → Community plugins → Browse* and install it directly.
+
+### Via BRAT (before official release)
+
+Install [BRAT](https://github.com/TfTHacker/obsidian42-brat), then run `BRAT: Add a beta plugin` and enter `muzi-xiaoren/Obsidian--TOC--reader`.
+
 ### Manual
 
 1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/muzi-xiaoren/Obsidian--TOC--reader/releases).
