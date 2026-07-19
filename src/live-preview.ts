@@ -49,9 +49,14 @@ function buildDecorations(state: EditorState, plugin: TocReaderPlugin): Decorati
 		const line = doc.line(i);
 		if (line.length > 32 || !TOC_LINE.test(line.text)) continue;
 
-		// Reveal the raw [TOC] source while the cursor/selection touches the line.
-		const onLine = state.selection.ranges.some((r) => r.from <= line.to && r.to >= line.from);
-		if (onLine) continue;
+		// Reveal the raw [TOC] source only when the user *selects* the line to edit
+		// or delete it. An empty caret merely resting on the line — e.g. the
+		// default cursor position when a note opens on a [TOC] first line — keeps
+		// the TOC rendered, since [TOC] is a directive, not text you edit in place.
+		const selectedOnLine = state.selection.ranges.some(
+			(r) => r.from < r.to && r.from <= line.to && r.to >= line.from
+		);
+		if (selectedOnLine) continue;
 
 		if (signature === null) {
 			const headings = plugin.app.metadataCache.getCache(path)?.headings ?? [];
