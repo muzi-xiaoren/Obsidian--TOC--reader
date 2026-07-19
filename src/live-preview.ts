@@ -1,5 +1,5 @@
 import { EditorState, Extension, RangeSetBuilder, StateField } from "@codemirror/state";
-import { Decoration, DecorationSet, EditorView, WidgetType } from "@codemirror/view";
+import { Decoration, DecorationSet, EditorView, ViewPlugin, WidgetType } from "@codemirror/view";
 import { editorInfoField, editorLivePreviewField } from "obsidian";
 import { buildTocElement, headingsSignature } from "./toc-builder";
 import type TocReaderPlugin from "./main";
@@ -72,10 +72,33 @@ function buildDecorations(state: EditorState, plugin: TocReaderPlugin): Decorati
  * decorations from ViewPlugins), so the whole document is rescanned per
  * transaction — cheap, since it is one regex test per line.
  */
-export function tocLivePreviewExtension(plugin: TocReaderPlugin): Extension {
+function tocStateField(plugin: TocReaderPlugin): StateField<DecorationSet> {
 	return StateField.define<DecorationSet>({
 		create: (state) => buildDecorations(state, plugin),
 		update: (_deco, tr) => buildDecorations(tr.state, plugin),
 		provide: (field) => EditorView.decorations.from(field),
 	});
+}
+
+/**
+ * When a note opens, the state field's `create` may run before Obsidian has
+ * attached the file/mode fields, so it returns no decorations and — because a
+ * field only recomputes on transactions — the [TOC] line stays raw until the
+ * user happens to interact. Dispatch one empty transaction after mount to force
+ * a recompute once everything is ready.
+ */
+const tocInitialRefresh = ViewPlugin.fromClass(
+	class {
+		private timer: number;
+		constructor(view: EditorView) {
+			this.timer = window.setTimeout(() => view.dispatch({}), 0);
+		}
+		destroy() {
+			window.clearTimeout(this.timer);
+		}
+	}
+);
+
+export function tocLivePreviewExtension(plugin: TocReaderPlugin): Extension {
+	return [tocStateField(plugin), tocInitialRefresh];
 }
