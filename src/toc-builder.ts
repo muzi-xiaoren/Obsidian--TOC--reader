@@ -1,5 +1,7 @@
 import { HeadingCache } from "obsidian";
 import type { TocSettings } from "./settings";
+import { renderInline } from "./inline-markdown";
+import { t } from "./i18n";
 
 /**
  * Stable fingerprint of the TOC input, used by the Live Preview widget to
@@ -28,7 +30,7 @@ export function buildTocElement(
 	const filtered = headings.filter((h) => h.level >= settings.minLevel && h.level <= settings.maxLevel);
 
 	if (filtered.length === 0) {
-		container.createDiv({ cls: "toc-reader-empty", text: "TOC: no headings found" });
+		container.createDiv({ cls: "toc-reader-empty", text: t().emptyToc });
 		return container;
 	}
 
@@ -69,7 +71,9 @@ export function buildTocElement(
 		if (settings.showNumbers) {
 			link.createSpan({ cls: "toc-reader-num", text: counters.slice(0, depth + 1).join(".") });
 		}
-		link.createSpan({ cls: "toc-reader-text", text: heading.heading });
+			// Heading text is raw Markdown source, so render its inline markup
+			// (bold, italic, code, …) the way Typora's [TOC] does.
+			renderInline(link.createSpan({ cls: "toc-reader-text" }), heading.heading);
 
 		const line = heading.position.start.line;
 		link.addEventListener("click", (evt) => {

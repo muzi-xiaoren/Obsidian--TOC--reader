@@ -33,6 +33,33 @@
 	text-decoration: underline;
 }
 
+/* Inline markup from the heading text. Keep it tinted like the link it sits
+   in, and keep it from changing the line box height. */
+.toc-reader .toc-reader-text strong,
+.toc-reader .toc-reader-text em,
+.toc-reader .toc-reader-text del,
+.toc-reader .toc-reader-text mark,
+.toc-reader .toc-reader-text code {
+	color: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	vertical-align: baseline;
+}
+
+.toc-reader .toc-reader-text mark {
+	background-color: var(--text-highlight-bg);
+	padding: 0;
+	border-radius: 2px;
+}
+
+.toc-reader .toc-reader-text code {
+	background-color: var(--code-background, var(--background-modifier-border));
+	font-family: var(--font-monospace);
+	font-size: 0.9em;
+	padding: 0 0.25em;
+	border-radius: var(--radius-s, 3px);
+}
+
 .toc-reader .toc-reader-num {
 	margin-inline-end: 0.45em;
 	color: var(--text-muted);

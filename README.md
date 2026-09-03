@@ -7,9 +7,11 @@ Typora-style `[TOC]` for Obsidian. Drop a `[TOC]` line anywhere in a note and it
 - Renders any standalone `[TOC]` / `[toc]` line as a nested table of contents, built from the note's headings.
 - Works in **reading view** and in **Live Preview** (the widget turns back into editable `[TOC]` source when your cursor is on that line).
 - Click an entry to **jump to the heading**. Jumps use line positions, so duplicate heading names each go to their own spot.
+- Inline markup in a heading (`**bold**`, `*italic*`, `` `code` ``, `~~strike~~`, `==highlight==`, wikilinks) renders as formatted text instead of leaking its Markdown symbols.
 - Non-contiguous heading levels (an H4 directly under an H2) fold into relative indentation, like Typora.
 - TOC updates automatically as you add/remove/rename headings.
 - Settings: min/max heading level to include, optional Typora-style `1.2.3` numbering.
+- UI follows Obsidian's display language (which defaults to your system language): English, 简体中文, 繁體中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (BR).
 
 ## Installation
 
@@ -59,9 +61,11 @@ In reading view and Live Preview the line becomes a nested, clickable table of c
 Typora 里的 `[TOC]` 标签在 Obsidian 中只会显示成一个点不动的蓝色链接。装上本插件后，`[TOC]` 会渲染成和 Typora 相似的多级目录：
 
 - 阅读模式和实时预览（Live Preview）都支持；实时预览下光标移到 `[TOC]` 所在行会还原成源码，方便编辑。
+- 标题里的行内格式（`**粗体**`、`*斜体*`、`` `代码` ``、`~~删除线~~`、`==高亮==`、双链等）会正常渲染，不会露出 Markdown 符号。
 - 目录按标题级数自动嵌套缩进，点击条目即可跳转到对应标题（重名标题也能正确各跳各的）。
 - 标题增删改后目录自动刷新。
 - 设置页可配置目录包含的标题级数范围，以及是否显示 Typora 风格的 `1.2.3` 编号。
+- 界面文字跟随 Obsidian 的显示语言（Obsidian 本身默认跟随系统语言），已内置英语、简体中文、繁体中文、日语、韩语、俄语、德语、法语、西班牙语、葡萄牙语（巴西）。
 
 ## License
 
