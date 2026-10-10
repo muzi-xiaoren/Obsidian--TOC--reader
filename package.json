@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-toc-reader",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Typora-style [TOC] rendering for Obsidian, with clickable jump-to-heading in reading view and Live Preview.",
 	"main": "main.js",
 	"scripts": {

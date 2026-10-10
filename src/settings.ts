@@ -45,7 +45,9 @@ export class TocSettingTab extends PluginSettingTab {
 	}
 
 	async setControlValue(key: string, value: unknown): Promise<void> {
-		await super.setControlValue(key, value);
+		// Persist directly: super.setControlValue() only exists from Obsidian 1.13, above minAppVersion.
+		Object.assign(this.plugin.settings, { [key]: value });
+		await this.plugin.saveSettings();
 		this.plugin.refreshAll();
 	}
 
