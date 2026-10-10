@@ -16,7 +16,7 @@ export default class TocReaderPlugin extends Plugin {
 		this.registerMarkdownPostProcessor((el, ctx) => {
 			for (const p of Array.from(el.querySelectorAll("p"))) {
 				if (TOC_TEXT.test((p.textContent ?? "").trim())) {
-					ctx.addChild(new TocRenderChild(p as HTMLElement, this, ctx.sourcePath));
+					ctx.addChild(new TocRenderChild(p, this, ctx.sourcePath));
 				}
 			}
 		});
@@ -50,7 +50,7 @@ export default class TocReaderPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, (await this.loadData()) as Partial<TocSettings> | null);
 	}
 
 	async saveSettings() {

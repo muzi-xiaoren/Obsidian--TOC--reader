@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
+import { App, PluginSettingTab, Setting, SettingDefinitionItem } from "obsidian";
 import type TocReaderPlugin from "./main";
 import { t } from "./i18n";
 
@@ -22,6 +22,34 @@ export class TocSettingTab extends PluginSettingTab {
 		super(app, plugin);
 	}
 
+	/** Obsidian 1.13+ renders the tab from these definitions and indexes them for settings search. */
+	getSettingDefinitions(): SettingDefinitionItem[] {
+		const strings = t();
+		return [
+			{
+				name: strings.minLevelName,
+				desc: strings.minLevelDesc,
+				control: { type: "slider", key: "minLevel", min: 1, max: 6, step: 1 },
+			},
+			{
+				name: strings.maxLevelName,
+				desc: strings.maxLevelDesc,
+				control: { type: "slider", key: "maxLevel", min: 1, max: 6, step: 1 },
+			},
+			{
+				name: strings.showNumbersName,
+				desc: strings.showNumbersDesc,
+				control: { type: "toggle", key: "showNumbers" },
+			},
+		];
+	}
+
+	async setControlValue(key: string, value: unknown): Promise<void> {
+		await super.setControlValue(key, value);
+		this.plugin.refreshAll();
+	}
+
+	/** Fallback for Obsidian versions older than 1.13, which never call getSettingDefinitions(). */
 	display(): void {
 		const { containerEl } = this;
 		const strings = t();
@@ -34,7 +62,6 @@ export class TocSettingTab extends PluginSettingTab {
 				slider
 					.setLimits(1, 6, 1)
 					.setValue(this.plugin.settings.minLevel)
-					.setDynamicTooltip()
 					.onChange(async (value) => {
 						this.plugin.settings.minLevel = value;
 						await this.plugin.saveSettings();
@@ -49,7 +76,6 @@ export class TocSettingTab extends PluginSettingTab {
 				slider
 					.setLimits(1, 6, 1)
 					.setValue(this.plugin.settings.maxLevel)
-					.setDynamicTooltip()
 					.onChange(async (value) => {
 						this.plugin.settings.maxLevel = value;
 						await this.plugin.saveSettings();
